@@ -1,0 +1,34 @@
+name: Deploy_Frontend
+
+on: 
+  push: 
+    branches: [main]
+    paths:
+    - 'frontend/**'
+  pull_request: 
+    branches: [main]
+    paths: 
+    - 'frontend/**'
+
+jobs: 
+  deploy: 
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    
+    - name: Log in to azure
+      uses: azure/login@v1
+      with: 
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Upload to blob storage
+      uses: azure/CLI@v1
+      with:
+        inlineScript: |
+          az storage blob upload-batch --account-name cloudresumemaria --auth-mode key -d '$web' -s frontend/
+  # Azure logout
+    - name: logout
+      run: |
+            az logout
+      if: always()

@@ -7,7 +7,7 @@ const functionApiURl = 'https://cloud-resume-maria.azurewebsites.net/api/GetResu
 
 const getVisitCount = () => {
     let count = 30;
-    fetch(functionApiURL).then(response => {
+    fetch(functionApiURl).then(response => {
         return response.json()
     }).then(response => {
         console.log("Website called function API.")
